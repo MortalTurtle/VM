@@ -9,20 +9,20 @@ function VM()
     this.commands['input'] = function() {};
     this.commands['set'] = function() 
     {
-        VM.memory[VM.instructions[VM.ip + 1]] = parseInt(VM.instructions[VM.ip + 2]);
-        VM.ip += 3;
+        this.memory[this.instructions[this.ip + 1]] = parseInt(this.instructions[this.ip + 2]);
+        this.ip += 3;
     };
 
     this.commands['add'] = function()
     {
-        VM.memory[VM.instructions[VM.ip + 3]] = 
-            VM.memory[VM.instructions[VM.ip + 2]] + VM.memory[VM.instructions[VM.ip + 2]];
-        VM.ip += 4
+        this.memory[this.instructions[this.ip + 3]] = 
+            this.memory[this.instructions[this.ip + 2]] + this.memory[this.instructions[this.ip + 2]];
+        this.ip += 4
     };
 
     this.commands['fibbonachi'] = function()
     {
-        var n = parseInt(VM.instructions[VM.ip + 1]);
+        var n = parseInt(this.instructions[this.ip + 1]);
         var num1 = 1;
         var num2 = 1;
         for (i = 2; i < n;i++)
@@ -31,15 +31,15 @@ function VM()
             num2 = num2 + num1;
             num1 = temp;
         }
-        VM.memory[VM.instructions[VM.ip + 2]] = num2;
-        VM.ip += 3;
+        this.memory[this.instructions[this.ip + 2]] = num2;
+        this.ip += 3;
     };
 
     this.commands['nod'] = function()
     {
-        var n = parseInt(VM.instructions[VM.ip + 1]);
-        var num1 = VM.memory[VM.instructions[VM.ip + 1]];
-        var num2 = VM.memory[VM.instructions[VM.ip + 2]];
+        var n = parseInt(this.instructions[this.ip + 1]);
+        var num1 = this.memory[this.instructions[this.ip + 1]];
+        var num2 = this.memory[this.instructions[this.ip + 2]];
         nodDefault = -1;
         var flag = false;
         if (num1 > num2)
@@ -54,28 +54,28 @@ function VM()
                 nodDefault = nod;
                 break;
             }
-        VM.memory[VM.instructions[VM.ip + 3]] = nodDefault;
-        VM.ip += 4;
+        this.memory[this.instructions[this.ip + 3]] = nodDefault;
+        this.ip += 4;
     };
     
     this.commands['output'] = function()
     {
-        console.log(VM.memory[VM.instructions[VM.ip + 1]]);
-        VM.ip += 2;
+        console.log(this.memory[this.instructions[this.ip + 1]]);
+        this.ip += 2;
     };
 
     this.run = function(programmFile)
     {
-        VM.ip = 0;
+        this.ip = 0;
         fs = require('fs');
         programmText = fs.readFileSync(programmFile);
         programmText = programmText.toString(); programmText += ' exit';
-        VM.instructions = programmText.split(/ |\r\n/);
-        VM.memory = new Array();
+        this.instructions = programmText.split(/ |\r\n/);
+        this.memory = new Array();
         //console.log(VM.instructions);
-        while(VM.instructions[VM.ip] != 'exit')
+        while(this.instructions[this.ip] != 'exit')
         {
-            this.commands[VM.instructions[VM.ip]].call();
+            this.commands[this.instructions[this.ip]].call(this);
         }
     }
 }
