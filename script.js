@@ -40,6 +40,7 @@ function VM()
         this.memory[this.instructions[this.ip + 3]] = this.memory[this.instructions[this.ip + 1]] % n;
         this.ip += 4;
     };
+    
     this.commands['pow'] = function() // frommemcell n tomemcell
     {
         var n = parseFloat(this.instructions[this.ip + 2]);
@@ -47,6 +48,44 @@ function VM()
         this.ip += 4;
     };
     
+    this.commands['gcd'] = function() // fromCell fromCell toCell
+    {
+        var num1 = this.memory[this.instructions[this.ip + 1]];
+        var num2 = this.memory[this.instructions[this.ip + 2]];
+        nodDefault = -1;
+        if (num1 > num2)
+        {
+            temp = num1;
+            num1 = num2;
+            num2 = temp;
+        }
+        for (nod = 2; i < num1;nod++)
+            if (num1 % nod == 0 && num2 % nod == 0)
+            {
+                nodDefault = nod;
+                break;
+            }
+        this.memory[this.instructions[this.ip + 3]] = nodDefault;
+        this.ip += 4;
+    };
+
+    this.commands['lcm'] = function() // fromCell fromCell toCell
+    {
+        var num1 = this.memory[this.instructions[this.ip + 1]];
+        var num2 = this.memory[this.instructions[this.ip + 2]];
+        var start = num1 * num2;
+        if (num1 > num2)
+        {
+            temp = num1;
+            num1 = num2;
+            num2 = temp;
+        }
+        for (start = num1 * num2; start >= num2; start--)
+            if (start % num1 == 0 && start % num2 == 0)
+                this.memory[this.instructions[this.ip + 3]] = start;
+        this.ip += 4;
+    };
+
     this.commands['output'] = function()
     {
         console.log(this.memory[this.instructions[this.ip + 1]]);
