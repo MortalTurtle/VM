@@ -9,52 +9,41 @@ function VM()
     this.commands['input'] = function() {};
     this.commands['set'] = function() 
     {
-        this.memory[this.instructions[this.ip + 1]] = parseInt(this.instructions[this.ip + 2]);
+        this.memory[this.instructions[this.ip + 1]] = parseFloat(this.instructions[this.ip + 2]);
         this.ip += 3;
     };
 
-    this.commands['add'] = function()
+    this.commands['add'] = function() // fromMemcell fromMemcell toMemcell
     {
         this.memory[this.instructions[this.ip + 3]] = 
-            this.memory[this.instructions[this.ip + 2]] + this.memory[this.instructions[this.ip + 2]];
+            this.memory[this.instructions[this.ip + 2]] + this.memory[this.instructions[this.ip + 1]];
         this.ip += 4
     };
-
-    this.commands['fibbonachi'] = function()
+    this.commands['sqrt'] = function() // frommemcell tomemcell
     {
-        var n = parseInt(this.instructions[this.ip + 1]);
-        var num1 = 1;
-        var num2 = 1;
-        for (i = 2; i < n;i++)
-        {
-            temp = num2;
-            num2 = num2 + num1;
-            num1 = temp;
-        }
-        this.memory[this.instructions[this.ip + 2]] = num2;
+        this.memory[this.instructions[this.ip + 2]] = Math.sqrt(this.memory[this.instructions[this.ip + 1]]);
         this.ip += 3;
     };
-
-    this.commands['nod'] = function()
+    this.commands['divide'] = function() // frommemcell frommemcell tomemcell
     {
-        var n = parseInt(this.instructions[this.ip + 1]);
-        var num1 = this.memory[this.instructions[this.ip + 1]];
-        var num2 = this.memory[this.instructions[this.ip + 2]];
-        nodDefault = -1;
-        var flag = false;
-        if (num1 > num2)
-        {
-            temp = num1;
-            num1 = num2;
-            num2 = temp;
-        }
-        for (nod = 2; i < num1;nod++)
-            if (num1 % nod == 0 && num2 % nod == 0)
-            {
-                nodDefault = nod;
-                break;
-            }
-        this.memory[this.instructions[this.ip + 3]] = nodDefault;
+        this.memory[this.instructions[this.ip + 3]] = this.memory[this.instructions[this.ip + 1]] / this.memory[this.instructions[this.ip + 2]];
+        this.ip += 4;
+    };
+    this.commands['floor'] = function() // frommemcell tomemcell
+    {
+        this.memory[this.instructions[this.ip + 2]] = Math.floor(this.memory[this.instructions[this.ip + 1]]);
+        this.ip += 3;
+    };
+    this.commands['mod'] = function() // frommemcell n tomemcell
+    {
+        var n = parseFloat(this.instructions[this.ip + 2]);
+        this.memory[this.instructions[this.ip + 3]] = this.memory[this.instructions[this.ip + 1]] % n;
+        this.ip += 4;
+    };
+    this.commands['pow'] = function() // frommemcell n tomemcell
+    {
+        var n = parseFloat(this.instructions[this.ip + 2]);
+        this.memory[this.instructions[this.ip + 3]] = Math.pow(this.memory[this.instructions[this.ip + 1]], n);
         this.ip += 4;
     };
     
