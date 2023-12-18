@@ -1,0 +1,12 @@
+set sqrt5 5
+sqrt sqrt5 sqrt5
+set one 1
+add sqrt5 one phi
+set two 2
+divide phi two phi
+pow phi 5 phi
+divide phi sqrt5 phi
+set half 0.5
+add phi half phi
+floor phi phi
+output phi
