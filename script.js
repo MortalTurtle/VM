@@ -59,12 +59,9 @@ function VM()
             num1 = num2;
             num2 = temp;
         }
-        for (nod = 2; i < num1;nod++)
+        for (nod = 2; nod <= num1;nod++)
             if (num1 % nod == 0 && num2 % nod == 0)
-            {
                 nodDefault = nod;
-                break;
-            }
         this.memory[this.instructions[this.ip + 3]] = nodDefault;
         this.ip += 4;
     };
